@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
 import logo from "./asset/logo.png";
 import { FaWhatsapp } from "react-icons/fa";
-import Register from "./Register";
+
 
 // Scroll-reveal hook 
 function useScrollReveal(threshold = 0.15) {
@@ -42,19 +42,19 @@ function useCountUp(target, duration = 1800, started = false) {
 
 // ── Data ────────────────────────────────────────────────────────────────────
 const courses = [
-  { icon: "🌐", title: "Full Stack Web Dev",     duration: "6 months", level: "Beginner → Pro", tag: "Bestseller", students: "3,200+" },
+  { icon: "🌐", title: "Full Stack Web Development",     duration: "6 months", level: "Beginner → Pro", tag: "Bestseller", students: "3,200+" , pdf: "/Syllabus/Full_Stack_Web_Developer (1).pdf"},
   { icon: "🤖", title: "AI & Machine Learning",  duration: "5 months", level: "Intermediate",   tag: "Hot",        students: "2,100+" },
   { icon: "📊", title: "Data Science",            duration: "4 months", level: "Beginner",       tag: "New",        students: "1,800+" },
-  { icon: "📱", title: "React Native Mobile",     duration: "3 months", level: "Intermediate",   tag: "",           students: "980+"   },
-  { icon: "☁️", title: "Cloud & DevOps",          duration: "4 months", level: "Intermediate",   tag: "",           students: "1,200+" },
-  { icon: "🛡️", title: "Cyber Security",          duration: "5 months", level: "Advanced",       tag: "",           students: "760+"   },
+  { icon: "⚛️", title: "React Full Stack Development",     duration: "3 months", level: "Intermediate",   tag: "",           students: "980+"  , pdf:"/Syllabus/React_Full_Stack_MERN_Developer.pdf" },
+  { icon: "🪛", title: "Manual & Automation Testing",          duration: "4 months", level: "Intermediate",   tag: "",           students: "1,200+",pdf: "/Syllabus/Manual_Automation_Testing.pdf"},
+  { icon: "🐍", title: "Python Full Stack Development",          duration: "5 months", level: "Advanced",       tag: "",           students: "760+", pdf:"/Syllabus/Python_Full_Stack_Developer.pdf" },
 ];
 
 const stats = [
-  { value: "12000", suffix: "+", label: "Students Trained" },
-  { value: "95",    suffix: "%", label: "Placement Rate"   },
-  { value: "200",   suffix: "+", label: "Hiring Partners"  },
-  { value: "49",    suffix: "★", label: "Avg Rating", display: "4.9★" },
+  { value: "2000", suffix: "+", label: "Students Trained" },
+  { value: "93",    suffix: "%", label: "Placement Rate"   },
+  { value: "50",   suffix: "+", label: "Hiring Partners"  },
+  { value: "49",    suffix: "★", label: "Avg Rating", display: "4.5★" },
 ];
 
 const features = [
@@ -87,6 +87,12 @@ function Navbar()  {
   }, []);
 
   const links = ["Home","Courses","Placements","About","Contact",];
+  const openRegistration = () => {
+  window.open(
+    "https://docs.google.com/forms/d/e/1FAIpQLSfJ_G81G51gRSVXU0WgK8RdyJ9UxIJXvC6Ih-7vCmI3NRDnGw/viewform",
+    "_blank"
+  );
+};
 const go = (id, label) => {
   setActiveLink(label);
 
@@ -117,12 +123,28 @@ const go = (id, label) => {
           ))}
         </ul>
 
-        <div className="navbar__right">
-          <button className="btn btn--ghost-nav" onClick={() => go("contact","Contact")}>Login</button>
-          <button className="btn btn--primary navbar__cta ripple" onClick={() => go("contact","Contact")}>
-            Apply Now ✦
-          </button>
-        </div>
+       <div className="navbar__right">
+  <button
+    className="btn btn--ghost-nav"
+    onClick={() => go("contact","Contact")}
+  >
+    Login
+  </button>
+
+  <button
+    className="btn btn--primary navbar__cta ripple"
+    onClick={openRegistration}
+  >
+    Register
+  </button>
+
+  <button
+    className="btn btn--primary navbar__cta ripple"
+    onClick={() => go("contact","Contact")}
+  >
+    Apply Now ✦
+  </button>
+</div>
 
         <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)} aria-label="menu">
           <span className={menuOpen?"rot45":""}/>
@@ -348,9 +370,9 @@ function About() {
     <section id="about" className="section about" ref={ref}>
       <div className={`about__grid reveal ${vis?"in":""}`}>
         {[
-          {icon:"🎯", title:"Our Vision",  color:"blue",   text:"To create world-class developers through practical, project-based learning that mirrors real industry workflows."},
-          {icon:"🏆", title:"Our Mission", color:"cyan",   text:"Deliver industry-focused education with live projects, mentorship, and guaranteed placement support."},
-          {icon:"💡", title:"Our Values",  color:"purple", text:"Practical skills over theory. Community-driven growth. Transparent outcomes. Every student placed with confidence."},
+          {icon:"🎯", title:"Our Vision",  color:"blue",   text:"To become a trusted learning platform that bridges the gap between education and industry requirements by offering innovative and career-oriented training programs. "},
+          {icon:"🏆", title:"Our Mission", color:"cyan",   text:"To provide quality, affordable, and industry-relevant education that empowers students and professionals to achieve their career goals through practical learning and skill development. "},
+          {icon:"💡", title:"Our Values",  color:"purple", text:"We value quality education, hands-on experience, and continuous learning. Our goal is to help students develop job-ready skills through expert guidance and real-world training."},
         ].map(c => (
           <div className={`about-card about-card--${c.color}`} key={c.title}>
             <div className="about-card__icon">{c.icon}</div>
@@ -391,7 +413,12 @@ function Courses() {
               <span>📶 {c.level}</span>
             </div>
             <div className="ccard__students">👥 {c.students} enrolled</div>
-            <button className="ccard__cta">View Syllabus →</button>
+           <button
+  className="ccard__cta"
+  onClick={() => window.open(c.pdf, "_blank")}
+>
+  View Details →
+</button>
           </div>
         ))}
       </div>
@@ -522,14 +549,9 @@ function Footer() {
         <div className="footer__col footer__brand">
           <span className="footer__logo">LearnSkill<span>X</span></span>
           <p>Empowering India's next generation of tech talent through world-class, practical education.</p>
-          <div className="footer__socials">
-            {["in","tw","yt","ig"].map(s => <a key={s} className="footer__social" href="#">{s.toUpperCase()}</a>)}
-          </div>
+        
         </div>
-        <div className="footer__col">
-          <h4>Courses</h4>
-          {["Full Stack","AI & ML","Data Science","DevOps","Cyber Security"].map(l => <a key={l} href="#">{l}</a>)}
-        </div>
+        
         <div className="footer__col">
           <h4>Company</h4>
           {["About Us","Placements","Blog","Careers","Press"].map(l => <a key={l} href="#">{l}</a>)}
