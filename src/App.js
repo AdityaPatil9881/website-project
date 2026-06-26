@@ -75,7 +75,7 @@ const testimonials = [
 const placementCompanies = ["Google","Amazon","Microsoft","Flipkart","Infosys","TCS","Wipro","Zomato","CRED","Swiggy","Razorpay","PhonePe","Ola","Meesho","Paytm"];
 
 // ── Navbar ───────────────────────────────────────────────────────────────────
-function Navbar()  {
+function Navbar({ onAboutClick })  {
   const [scrolled, setScrolled]   = useState(false);
   const [menuOpen, setMenuOpen]   = useState(false);
   const [activeLink, setActiveLink] = useState("Home");
@@ -94,11 +94,11 @@ function Navbar()  {
   );
 };
 const go = (id, label) => {
+  if (label === "About") {
+    onAboutClick && onAboutClick();
+    return;
+  }
   setActiveLink(label);
-
- 
-
-
   document
     .getElementById(id.toLowerCase())
     ?.scrollIntoView({ behavior: "smooth" });
@@ -156,108 +156,87 @@ const go = (id, label) => {
   );
 }
 
-// ── Hero Carousel ─────────────────────────────────────────────────────────────
-const carouselSlides = [
-  {
-    bg: "linear-gradient(160deg,#0f2544 0%,#1a3a6e 100%)",
-    emoji: "🎓",
-    tag: "Study Abroad",
-    headline: "Study in Top\nUniversities Abroad",
-    sub: "Explore programs in USA, UK, Canada & more",
-    cta: "Explore Programs →",
-    accent: "#00c9ff",
-  },
-  {
-    bg: "linear-gradient(160deg,#130f2e 0%,#2d1b6e 100%)",
-    emoji: "🤖",
-    tag: "Agentic AI",
-    headline: "Master Agentic\nAI Development",
-    sub: "Build autonomous AI systems with top mentors",
-    cta: "Start Learning →",
-    accent: "#7c5cfc",
-  },
-  {
-    bg: "linear-gradient(160deg,#0a2410 0%,#0d4a1e 100%)",
-    emoji: "💼",
-    tag: "Placements",
-    headline: "Get Placed at\nTop Tech Companies",
-    sub: "Average package ₹12 LPA · 95% placement rate",
-    cta: "View Success Stories →",
-    accent: "#00ff88",
-  },
-  {
-    bg: "linear-gradient(160deg,#1f1209 0%,#5c2a00 100%)",
-    emoji: "📜",
-    tag: "Certification",
-    headline: "IIT / IIM\nCertified Programs",
-    sub: "Globally recognised credentials from premier institutes",
-    cta: "See Certifications →",
-    accent: "#ffaa00",
-  },
-];
-
-function HeroCarousel() {
-  const [idx, setIdx]   = useState(0);
-  const [anim, setAnim] = useState(true);
-  const total = carouselSlides.length;
-
-  const go = (next) => {
-    setAnim(false);
-    setTimeout(() => { setIdx((next + total) % total); setAnim(true); }, 250);
-  };
-
-  useEffect(() => {
-    const t = setInterval(() => go(idx + 1), 3800);
-    return () => clearInterval(t);
-  }, [idx]);
-
-  const s = carouselSlides[idx];
+// ── Counselling Form Card ─────────────────────────────────────────────────────
+function CounsellingForm() {
+  const [form, setForm] = useState({ name: "", email: "", phone: "", experience: "", course: "" });
+  const [sent, setSent] = useState(false);
+  const h = e => setForm({ ...form, [e.target.name]: e.target.value });
 
   return (
-    <div className="hc">
-      <div className={`hc__slide ${anim ? "hc__slide--in" : ""}`} style={{ background: s.bg }}>
-        {/* Decorative circles */}
-        <div className="hc__circle hc__circle--1" style={{ borderColor: s.accent }} />
-        <div className="hc__circle hc__circle--2" style={{ borderColor: s.accent }} />
+    <div className="cf-wrap">
+      {/* Glow rings behind card */}
+      <div className="cf-ring cf-ring--1" />
+      <div className="cf-ring cf-ring--2" />
 
-        <span className="hc__tag" style={{ background: `${s.accent}22`, color: s.accent, borderColor: `${s.accent}55` }}>
-          {s.tag}
-        </span>
-
-        <div className="hc__emoji">{s.emoji}</div>
-
-        <h2 className="hc__headline" style={{ "--accent": s.accent }}>
-          {s.headline.split("\n").map((line, i) =>
-            i === 1 ? <span key={i} style={{ color: s.accent }}>{line}</span>
-                    : <span key={i}>{line}<br/></span>
-          )}
-        </h2>
-
-        <p className="hc__sub">{s.sub}</p>
-
-        <button className="hc__cta" style={{ color: s.accent, borderColor: `${s.accent}55` }}>
-          {s.cta}
-        </button>
-
-        {/* Floating badge */}
-        <div className="hc__badge">
-          <span>🏅</span>
-          <div>
-            <strong>Placed at Google</strong>
-            <span>₹24 LPA · Priya Sharma</span>
+      <div className="cf-card">
+        {sent ? (
+          <div className="cf-success">
+            <span>🎉</span>
+            <h3>You're all set!</h3>
+            <p>Our expert will call you within 24 hours.</p>
           </div>
-        </div>
-      </div>
+        ) : (
+          <>
+            <div className="cf-card__header">
+              <span className="cf-card__badge">🎓 FREE</span>
+              <h2 className="cf-card__title">Free Counselling<br/>with Experts</h2>
+            </div>
 
-      {/* Arrows */}
-      <button className="hc__arrow hc__arrow--left"  onClick={() => go(idx - 1)}>‹</button>
-      <button className="hc__arrow hc__arrow--right" onClick={() => go(idx + 1)}>›</button>
+            <form onSubmit={e => { e.preventDefault(); setSent(true); }} className="cf-form">
+              <div className="cf-field">
+                <span className="cf-field__icon">👤</span>
+                <input
+                  name="name" placeholder="Enter your Full Name *"
+                  value={form.name} onChange={h} required
+                />
+              </div>
 
-      {/* Dots */}
-      <div className="hc__dots">
-        {carouselSlides.map((_, i) => (
-          <button key={i} className={`hc__dot ${i === idx ? "hc__dot--active" : ""}`} onClick={() => go(i)} />
-        ))}
+              <div className="cf-field">
+                <span className="cf-field__icon">✉️</span>
+                <input
+                  name="email" type="email" placeholder="Enter your Email *"
+                  value={form.email} onChange={h} required
+                />
+              </div>
+
+              <div className="cf-field cf-field--phone">
+                <div className="cf-flag">🇮🇳 <span>+91</span></div>
+                <input
+                  name="phone" placeholder="Phone Number *"
+                  value={form.phone} onChange={h} required
+                />
+              </div>
+
+              <div className="cf-field cf-field--select">
+                <select name="experience" value={form.experience} onChange={h} required>
+                  <option value="">Work Experience *</option>
+                  <option>Fresher (0 years)</option>
+                  <option>0–1 Years</option>
+                  <option>1–3 Years</option>
+                  <option>3–5 Years</option>
+                  <option>5+ Years</option>
+                </select>
+                <span className="cf-select-arrow">▾</span>
+              </div>
+
+              <div className="cf-field cf-field--select">
+                <select name="course" value={form.course} onChange={h} required>
+                  <option value="">Select Course Preference *</option>
+                  {courses.map(c => <option key={c.title}>{c.title}</option>)}
+                </select>
+                <span className="cf-select-arrow">▾</span>
+              </div>
+
+              <p className="cf-terms">
+                By submitting, you agree to our <a href="#">Terms &amp; Conditions</a> and <a href="#">Privacy Policy</a>.
+              </p>
+
+              <button type="submit" className="cf-submit ripple">
+                Apply For Counselling 🚀
+              </button>
+            </form>
+          </>
+        )}
       </div>
     </div>
   );
@@ -322,8 +301,8 @@ function Hero() {
           </div>
         </div>
 
-        {/* RIGHT – image carousel */}
-        <HeroCarousel />
+        {/* RIGHT – counselling form */}
+        <CounsellingForm />
       </div>
 
       {/* Stats bar */}
@@ -590,11 +569,162 @@ function Footer() {
 
 // ── App ──────────────────────────────────────────────────────────────────────
 
+// ── About Us Full Page ────────────────────────────────────────────────────────
+const instituteHistory = `LearnSkillX is a skill development platform focused on providing practical, industry-oriented education. We aim to bridge the gap between academics and industry by offering hands-on learning, project-based training, and career guidance. Our mission is to empower students with the right skills to build successful careers in technology and professional fields. With expert guidance and structured programs, we support learners in achieving their career goals and improving their technical expertise.`;
+
+const founderInfo = {
+  name: "Anant Navale",
+  designation: "Founder & Director, LearnSkillX Institute",
+  bio: `Anant Navale is the Co-Founder of LearnSkillX and is dedicated to empowering students through quality education and skill development programs. He plays a vital role in strategic planning, mentorship, and creating opportunities for learners to achieve their career goals.`,
+};
+
+const facultyTeam = [
+  { name: "Vrushali Jadhav", role: "Co-Founder & Faculty Member", description: "Vrushali Jadhav is the Co-Founder of LearnSkillX and a passionate technology enthusiast dedicated to practical learning and skill development. She focuses on providing industry-oriented learning experiences and helping students build successful careers." },
+  { name: "Jayant Navale",   role: "Faculty Member",              description: "Jayant Navale is a dedicated faculty member with expertise in technical training and student mentorship. He is committed to delivering high-quality education and helping learners develop practical skills required in today's industry." },
+];
+
+const achievements = [
+  "Successfully established LearnSkillX as a skill development and learning platform.",
+  "Trained and guided students in various technical and professional domains.",
+  "Conducted workshops, webinars, and career guidance sessions.",
+  "Promoted project-based and industry-focused learning approaches.",
+  "Helped learners enhance their employability and professional skills.",
+];
+
+const certifications = [
+  "Technical Skill Certifications",
+  "Internship Completion Certificates",
+  "Project Completion Certificates",
+  "Course Completion Certificates",
+  "Industry-Recognised Certification Programs",
+  "Professional Development Certifications",
+];
+
+const achievementIcons = ["🏆","⭐","🎓","🤝","🏅"];
+const certIcons        = ["✅","🎯","📜","💼","🎖️","🌟"];
+
+function AboutUsPage({ onBack }) {
+  return (
+    <div className="aup-wrap">
+      {/* Mini navbar with back */}
+      <nav className="navbar navbar--scrolled">
+        <div className="navbar__inner">
+          <a className="navbar__brand" onClick={onBack} style={{cursor:"pointer"}}>
+            <img src={logo} alt="LearnSkillX Logo" className="navbar__logo" />
+            <span className="navbar__text">LearnSkill<span className="navbar__brand-x">X</span></span>
+          </a>
+          <button className="btn btn--ghost-nav" onClick={onBack} style={{marginLeft:"auto"}}>
+            ← Back to Home
+          </button>
+        </div>
+      </nav>
+
+      {/* Hero */}
+      <header className="aup-hero">
+        <div className="aup-hero__inner">
+          <span className="aup-badge">🏫 India's #1 Skill Learning Platform</span>
+          <h1>About <span className="aup-accent">LearnSkillX</span></h1>
+          <p>Empowering students with practical skills, expert guidance, and a vision for lifelong success in technology and beyond.</p>
+        </div>
+      </header>
+
+      {/* Stats */}
+      <div className="aup-stats">
+        {[["12,000+","Students Trained"],["95%","Placement Rate"],["200+","Workshops Held"],["4.9★","Average Rating"]].map(([n,l])=>(
+          <div className="aup-stat" key={l}>
+            <div className="aup-stat__num">{n}</div>
+            <div className="aup-stat__label">{l}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Our Story */}
+      <section className="aup-section">
+        <span className="aup-eyebrow">Our Story</span>
+        <div className="aup-card">
+          <h2>About Us</h2>
+          <p>{instituteHistory}</p>
+        </div>
+      </section>
+
+      {/* Founder */}
+      <section className="aup-section">
+        <span className="aup-eyebrow">Leadership</span>
+        <h2 className="aup-section__title">Founder Information</h2>
+        <div className="aup-founder">
+          <div className="aup-founder__avatar">AN</div>
+          <div>
+            <h3>{founderInfo.name}</h3>
+            <p className="aup-founder__role">{founderInfo.designation}</p>
+            <p>{founderInfo.bio}</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Faculty */}
+      <section className="aup-section">
+        <span className="aup-eyebrow">Meet the Team</span>
+        <h2 className="aup-section__title">Faculty Team</h2>
+        <div className="aup-faculty-grid">
+          {facultyTeam.map((f,i)=>(
+            <div className="aup-faculty-card" key={i}>
+              <div className="aup-faculty-card__avatar">{f.name.split(" ").map(w=>w[0]).join("")}</div>
+              <h3>{f.name}</h3>
+              <p className="aup-faculty-card__role">{f.role}</p>
+              <p>{f.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Achievements */}
+      <section className="aup-section">
+        <span className="aup-eyebrow">Milestones</span>
+        <h2 className="aup-section__title">Achievements</h2>
+        <div className="aup-list-grid">
+          {achievements.map((item,i)=>(
+            <div className="aup-list-card" key={i}>
+              <span className="aup-list-card__icon">{achievementIcons[i]||"🏆"}</span>
+              <span>{item}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Certifications */}
+      <section className="aup-section">
+        <span className="aup-eyebrow">Recognition</span>
+        <h2 className="aup-section__title">Certifications</h2>
+        <div className="aup-list-grid">
+          {certifications.map((item,i)=>(
+            <div className="aup-list-card" key={i}>
+              <span className="aup-list-card__icon">{certIcons[i]||"✅"}</span>
+              <span>{item}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="footer" style={{marginTop:"60px"}}>
+        <div style={{textAlign:"center",padding:"40px 20px",borderTop:"1px solid rgba(255,255,255,.08)"}}>
+          <p style={{color:"#64748b",fontSize:"13px"}}>© {new Date().getFullYear()} LearnSkillX Institute. All rights reserved.</p>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
 export default function App() {
+  const [page, setPage] = useState("home");
+
+  if (page === "about") {
+    return <AboutUsPage onBack={() => { setPage("home"); window.scrollTo(0,0); }} />;
+  }
+
   return (
     <>
-      <Navbar />
-
+      <Navbar onAboutClick={() => { setPage("about"); window.scrollTo(0,0); }} />
       <Hero />
       <About />
       <Courses />
