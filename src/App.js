@@ -630,7 +630,7 @@ function AboutUsPage({ onBack }) {
 
       {/* Stats */}
       <div className="aup-stats">
-        {[["12,000+","Students Trained"],["95%","Placement Rate"],["200+","Workshops Held"],["4.9★","Average Rating"]].map(([n,l])=>(
+        {[["2,000+","Students Trained"],["95%","Placement Rate"],["200+","Workshops Held"],["4.9★","Average Rating"]].map(([n,l])=>(
           <div className="aup-stat" key={l}>
             <div className="aup-stat__num">{n}</div>
             <div className="aup-stat__label">{l}</div>
