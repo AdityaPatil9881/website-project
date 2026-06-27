@@ -1,11 +1,11 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
 import logo from "./asset/logo.png";
 import { FaWhatsapp } from "react-icons/fa";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import Course from "./Course"; // ← import Course page
 
-
-// Scroll-reveal hook 
+// Scroll-reveal hook
 function useScrollReveal(threshold = 0.15) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
@@ -13,7 +13,12 @@ function useScrollReveal(threshold = 0.15) {
     const el = ref.current;
     if (!el) return;
     const obs = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setVisible(true); obs.disconnect(); } },
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          obs.disconnect();
+        }
+      },
       { threshold }
     );
     obs.observe(el);
@@ -22,7 +27,7 @@ function useScrollReveal(threshold = 0.15) {
   return [ref, visible];
 }
 
-// ── Counter animation hook ───────────────────────────────────────────────────
+// Counter animation hook
 function useCountUp(target, duration = 1800, started = false) {
   const [count, setCount] = useState(0);
   useEffect(() => {
@@ -40,44 +45,111 @@ function useCountUp(target, duration = 1800, started = false) {
   return count;
 }
 
-// ── Data ────────────────────────────────────────────────────────────────────
+// Data
 const courses = [
-  { icon: "🌐", title: "Full Stack Web Development",     duration: "6 months", level: "Beginner → Pro", tag: "Bestseller", students: "3,200+" , pdf: "/Syllabus/Full_Stack_Web_Developer (1).pdf"},
-  { icon: "🤖", title: "AI & Machine Learning",  duration: "5 months", level: "Intermediate",   tag: "Hot",        students: "2,100+" },
-  { icon: "📊", title: "Data Science",            duration: "4 months", level: "Beginner",       tag: "New",        students: "1,800+" },
-  { icon: "⚛️", title: "React Full Stack Development",     duration: "3 months", level: "Intermediate",   tag: "",           students: "980+"  , pdf:"/Syllabus/React_Full_Stack_MERN_Developer.pdf" },
-  { icon: "🪛", title: "Manual & Automation Testing",          duration: "4 months", level: "Intermediate",   tag: "",           students: "1,200+",pdf: "/Syllabus/Manual_Automation_Testing.pdf"},
-  { icon: "🐍", title: "Python Full Stack Development",          duration: "5 months", level: "Advanced",       tag: "",           students: "760+", pdf:"/Syllabus/Python_Full_Stack_Developer.pdf" },
+  {
+    icon: "🌐",
+    title: "Full Stack Web Development",
+    duration: "6 months",
+    level: "Beginner → Pro",
+    tag: "Bestseller",
+    students: "3,200+",
+    pdf: "/Syllabus/Full_Stack_Web_Developer (1).pdf",
+  },
+  {
+    icon: "🤖",
+    title: "AI & Machine Learning",
+    duration: "5 months",
+    level: "Intermediate",
+    tag: "Hot",
+    students: "2,100+",
+  },
+  {
+    icon: "📊",
+    title: "Data Science",
+    duration: "4 months",
+    level: "Beginner",
+    tag: "New",
+    students: "1,800+",
+  },
+  {
+    icon: "⚛️",
+    title: "React Full Stack Development",
+    duration: "3 months",
+    level: "Intermediate",
+    tag: "",
+    students: "980+",
+    pdf: "/Syllabus/React_Full_Stack_MERN_Developer.pdf",
+  },
+  {
+    icon: "🪛",
+    title: "Manual & Automation Testing",
+    duration: "4 months",
+    level: "Intermediate",
+    tag: "",
+    students: "1,200+",
+    pdf: "/Syllabus/Manual_Automation_Testing.pdf",
+  },
+  {
+    icon: "🐍",
+    title: "Python Full Stack Development",
+    duration: "5 months",
+    level: "Advanced",
+    tag: "",
+    students: "760+",
+    pdf: "/Syllabus/Python_Full_Stack_Developer.pdf",
+  },
 ];
 
 const stats = [
   { value: "2000", suffix: "+", label: "Students Trained" },
-  { value: "93",    suffix: "%", label: "Placement Rate"   },
-  { value: "50",   suffix: "+", label: "Hiring Partners"  },
-  { value: "49",    suffix: "★", label: "Avg Rating", display: "4.5★" },
+  { value: "93", suffix: "%", label: "Placement Rate" },
+  { value: "50", suffix: "+", label: "Hiring Partners" },
+  { value: "49", suffix: "★", label: "Avg Rating", display: "4.5★" },
 ];
 
 const features = [
   { icon: "🎓", text: "Live Mentorship" },
-  { icon: "💼", text: "Job Guarantee"   },
-  { icon: "🏗️", text: "Real Projects"  },
-  { icon: "📜", text: "Certificates"    },
+  { icon: "💼", text: "Job Guarantee" },
+  { icon: "🏗️", text: "Real Projects" },
+  { icon: "📜", text: "Certificates" },
   { icon: "🔁", text: "Lifetime Access" },
-  { icon: "🌍", text: "Global Network"  },
+  { icon: "🌍", text: "Global Network" },
 ];
 
 const testimonials = [
-  { name: "Priya Sharma",  role: "SDE @ Google",         text: "LearnSkillX completely changed my career path. The projects were real-world and the mentors were world-class.", avatar: "PS", pkg: "24 LPA" },
-  { name: "Arjun Mehta",   role: "Data Analyst @ Amazon", text: "I went from zero coding knowledge to landing a 12 LPA package in 7 months. Incredible support system.",     avatar: "AM", pkg: "12 LPA" },
-  { name: "Sneha Patil",   role: "Frontend Dev @ Flipkart", text: "The placement team is phenomenal. I had 3 offers before even completing the course!",                     avatar: "SP", pkg: "18 LPA" },
+  {
+    name: "Priya Sharma",
+    role: "SDE @ Google",
+    text: "LearnSkillX completely changed my career path. The projects were real-world and the mentors were world-class.",
+    avatar: "PS",
+    pkg: "24 LPA",
+  },
+  {
+    name: "Arjun Mehta",
+    role: "Data Analyst @ Amazon",
+    text: "I went from zero coding knowledge to landing a 12 LPA package in 7 months. Incredible support system.",
+    avatar: "AM",
+    pkg: "12 LPA",
+  },
+  {
+    name: "Sneha Patil",
+    role: "Frontend Dev @ Flipkart",
+    text: "The placement team is phenomenal. I had 3 offers before even completing the course!",
+    avatar: "SP",
+    pkg: "18 LPA",
+  },
 ];
 
-const placementCompanies = ["Google","Amazon","Microsoft","Flipkart","Infosys","TCS","Wipro","Zomato","CRED","Swiggy","Razorpay","PhonePe","Ola","Meesho","Paytm"];
+const placementCompanies = [
+  "Google","Amazon","Microsoft","Flipkart","Infosys","TCS","Wipro",
+  "Zomato","CRED","Swiggy","Razorpay","PhonePe","Ola","Meesho","Paytm",
+];
 
-// ── Navbar ───────────────────────────────────────────────────────────────────
-function Navbar({ onAboutClick })  {
-  const [scrolled, setScrolled]   = useState(false);
-  const [menuOpen, setMenuOpen]   = useState(false);
+// Navbar
+function Navbar({ onAboutClick }) {
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [activeLink, setActiveLink] = useState("Home");
 
   useEffect(() => {
@@ -86,88 +158,83 @@ function Navbar({ onAboutClick })  {
     return () => window.removeEventListener("scroll", fn);
   }, []);
 
-  const links = ["Home","Courses","Placements","About","Contact",];
-  const openRegistration = () => {
-  window.open(
-    "https://docs.google.com/forms/d/e/1FAIpQLSfJ_G81G51gRSVXU0WgK8RdyJ9UxIJXvC6Ih-7vCmI3NRDnGw/viewform",
-    "_blank"
-  );
-};
-const go = (id, label) => {
-  if (label === "About") {
-    onAboutClick && onAboutClick();
-    return;
-  }
-  setActiveLink(label);
-  document
-    .getElementById(id.toLowerCase())
-    ?.scrollIntoView({ behavior: "smooth" });
-};
+  const links = ["Home", "Courses", "Placements", "About", "Contact"];
+
+;
+
+  const go = (id, label) => {
+    if (label === "About") {
+      onAboutClick && onAboutClick();
+      return;
+    }
+    setActiveLink(label);
+    document.getElementById(id.toLowerCase())?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <nav className={`navbar ${scrolled ? "navbar--scrolled" : ""}`}>
       <div className="navbar__inner">
-<a className="navbar__brand" onClick={() => go("home","Home")}>
-  <img src={logo} alt="LearnSkillX Logo" className="navbar__logo" />
-  <span className="navbar__text">
-    LearnSkill<span className="navbar__brand-x">X</span>
-  </span>
-</a>
+        <a className="navbar__brand" onClick={() => go("home", "Home")}>
+          <img src={logo} alt="LearnSkillX Logo" className="navbar__logo" />
+          <span className="navbar__text">
+            LearnSkill<span className="navbar__brand-x">X</span>
+          </span>
+        </a>
         <ul className={`navbar__links ${menuOpen ? "open" : ""}`}>
-          {links.map(l => (
+          {links.map((l) => (
             <li key={l}>
-              <button className={`navbar__link ${activeLink===l ? "active":""}`} onClick={() => go(l,l)}>
+              <button
+                className={`navbar__link ${activeLink === l ? "active" : ""}`}
+                onClick={() => go(l, l)}
+              >
                 {l}
-                <span className="navbar__link-bar"/>
+                <span className="navbar__link-bar" />
               </button>
             </li>
           ))}
         </ul>
-
-       <div className="navbar__right">
-  <button
-    className="btn btn--ghost-nav"
-    onClick={() => go("contact","Contact")}
-  >
-    Login
-  </button>
-
-  <button
-    className="btn btn--primary navbar__cta ripple"
-    onClick={openRegistration}
-  >
-    Register
-  </button>
-
-  <button
-    className="btn btn--primary navbar__cta ripple"
-    onClick={() => go("contact","Contact")}
-  >
-    Apply Now ✦
-  </button>
-</div>
-
-        <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)} aria-label="menu">
-          <span className={menuOpen?"rot45":""}/>
-          <span className={menuOpen?"hide":""}/>
-          <span className={menuOpen?"rot-45":""}/>
+        <div className="navbar__right">
+          <button className="btn btn--ghost-nav" onClick={() => go("contact", "Contact")}>
+            Login
+          </button>
+        
+          <button
+            className="btn btn--primary navbar__cta ripple"
+            onClick={() => go("contact", "Contact")}
+          >
+            Apply Now ✦
+          </button>
+        </div>
+        <button
+          className="hamburger"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="menu"
+        >
+          <span className={menuOpen ? "rot45" : ""} />
+          <span className={menuOpen ? "hide" : ""} />
+          <span className={menuOpen ? "rot-45" : ""} />
         </button>
       </div>
     </nav>
   );
 }
 
-// ── Counselling Form Card ─────────────────────────────────────────────────────
+// Counselling Form Card
 function CounsellingForm() {
-  const [form, setForm] = useState({ name: "", email: "", phone: "", experience: "", course: "" });
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    experience: "",
+    course: "",
+  });
   const [sent, setSent] = useState(false);
-  const h = e => setForm({ ...form, [e.target.name]: e.target.value });
+  const h = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   return (
     <div className="cf-wrap">
-      {/* Glow rings behind card */}
       <div className="cf-ring cf-ring--1" />
       <div className="cf-ring cf-ring--2" />
-
       <div className="cf-card">
         {sent ? (
           <div className="cf-success">
@@ -179,36 +246,53 @@ function CounsellingForm() {
           <>
             <div className="cf-card__header">
               <span className="cf-card__badge">🎓 FREE</span>
-              <h2 className="cf-card__title">Free Counselling<br/>with Experts</h2>
+              <h2 className="cf-card__title">
+                Free Counselling
+                <br />
+                with Experts
+              </h2>
             </div>
-
-            <form onSubmit={e => { e.preventDefault(); setSent(true); }} className="cf-form">
+            <form onSubmit={(e) => { e.preventDefault(); setSent(true); }} className="cf-form">
               <div className="cf-field">
                 <span className="cf-field__icon">👤</span>
                 <input
-                  name="name" placeholder="Enter your Full Name *"
-                  value={form.name} onChange={h} required
+                  name="name"
+                  placeholder="Enter your Full Name *"
+                  value={form.name}
+                  onChange={h}
+                  required
                 />
               </div>
-
               <div className="cf-field">
                 <span className="cf-field__icon">✉️</span>
                 <input
-                  name="email" type="email" placeholder="Enter your Email *"
-                  value={form.email} onChange={h} required
+                  name="email"
+                  type="email"
+                  placeholder="Enter your Email *"
+                  value={form.email}
+                  onChange={h}
+                  required
                 />
               </div>
-
               <div className="cf-field cf-field--phone">
-                <div className="cf-flag">🇮🇳 <span>+91</span></div>
+                <div className="cf-flag">
+                  🇮🇳 <span>+91</span>
+                </div>
                 <input
-                  name="phone" placeholder="Phone Number *"
-                  value={form.phone} onChange={h} required
+                  name="phone"
+                  placeholder="Phone Number *"
+                  value={form.phone}
+                  onChange={h}
+                  required
                 />
               </div>
-
               <div className="cf-field cf-field--select">
-                <select name="experience" value={form.experience} onChange={h} required>
+                <select
+                  name="experience"
+                  value={form.experience}
+                  onChange={h}
+                  required
+                >
                   <option value="">Work Experience *</option>
                   <option>Fresher (0 years)</option>
                   <option>0–1 Years</option>
@@ -218,19 +302,20 @@ function CounsellingForm() {
                 </select>
                 <span className="cf-select-arrow">▾</span>
               </div>
-
               <div className="cf-field cf-field--select">
                 <select name="course" value={form.course} onChange={h} required>
                   <option value="">Select Course Preference *</option>
-                  {courses.map(c => <option key={c.title}>{c.title}</option>)}
+                  {courses.map((c) => (
+                    <option key={c.title}>{c.title}</option>
+                  ))}
                 </select>
                 <span className="cf-select-arrow">▾</span>
               </div>
-
               <p className="cf-terms">
-                By submitting, you agree to our <a href="#">Terms &amp; Conditions</a> and <a href="#">Privacy Policy</a>.
+                By submitting, you agree to our{" "}
+                <a href="#">Terms &amp; Conditions</a> and{" "}
+                <a href="#">Privacy Policy</a>.
               </p>
-
               <button type="submit" className="cf-submit ripple">
                 Apply For Counselling 🚀
               </button>
@@ -242,9 +327,14 @@ function CounsellingForm() {
   );
 }
 
-// ── Hero ─────────────────────────────────────────────────────────────────────
+// Hero
 function Hero() {
-  const words = ["Web Development","AI & Machine Learning","Data Science","Software Engineering"];
+  const words = [
+    "Web Development",
+    "AI & Machine Learning",
+    "Data Science",
+    "Software Engineering",
+  ];
   const [wIdx, setWIdx] = useState(0);
   const [show, setShow] = useState(true);
   const [statsRef, statsVisible] = useScrollReveal(0.1);
@@ -252,71 +342,74 @@ function Hero() {
   useEffect(() => {
     const t = setInterval(() => {
       setShow(false);
-      setTimeout(() => { setWIdx(i => (i+1)%words.length); setShow(true); }, 380);
+      setTimeout(() => {
+        setWIdx((i) => (i + 1) % words.length);
+        setShow(true);
+      }, 380);
     }, 2800);
     return () => clearInterval(t);
   }, []);
 
   return (
     <section id="home" className="hero">
-      {/* Grid lines background */}
-      <div className="hero__grid-bg" aria-hidden="true"/>
-
-      {/* Glow orbs */}
-      <div className="orb orb--blue"  aria-hidden="true"/>
-      <div className="orb orb--purple" aria-hidden="true"/>
-
+      <div className="hero__grid-bg" aria-hidden="true" />
+      <div className="orb orb--blue" aria-hidden="true" />
+      <div className="orb orb--purple" aria-hidden="true" />
       <div className="hero__layout">
-        {/* LEFT – text */}
         <div className="hero__text">
           <div className="hero__badge">
-            <span className="hero__badge-dot"/>
+            <span className="hero__badge-dot" />
             🚀 India's #1 Tech Learning Platform
           </div>
-
           <h1 className="hero__h1">
-            Build Your<br/>
+            Build Your
+            <br />
             <span className="hero__gradient-text">Tech Future</span>
           </h1>
-
           <p className="hero__sub">
             Industry-ready training in&nbsp;
-            <span className={`hero__word ${show?"show":""}`}>{words[wIdx]}</span>
+            <span className={`hero__word ${show ? "show" : ""}`}>
+              {words[wIdx]}
+            </span>
           </p>
-
           <div className="hero__actions">
-            <button className="btn btn--primary btn--lg ripple" onClick={() => document.getElementById("courses").scrollIntoView({behavior:"smooth"})}>
+            <button
+              className="btn btn--primary btn--lg ripple"
+              onClick={() =>
+                document
+                  .getElementById("courses")
+                  .scrollIntoView({ behavior: "smooth" })
+              }
+            >
               Explore Courses →
             </button>
-            <button className="btn btn--outline-white btn--lg" onClick={() => document.getElementById("about").scrollIntoView({behavior:"smooth"})}>
-              ▶ Watch Demo
-            </button>
+          
           </div>
-
           <div className="hero__trust">
             <div className="hero__avatars">
-              {["A","B","C","D"].map((l,i) => <span key={i} className="hero__av" style={{"--n":i}}>{l}</span>)}
+              {["A", "B", "C", "D"].map((l, i) => (
+                <span key={i} className="hero__av" style={{ "--n": i }}>
+                  {l}
+                </span>
+              ))}
             </div>
-            <p><strong>4,000+</strong> students enrolled this month</p>
+            <p>
+              <strong>4,000+</strong> students enrolled this month
+            </p>
           </div>
         </div>
-
-        {/* RIGHT – counselling form */}
         <CounsellingForm />
       </div>
-
-      {/* Stats bar */}
       <div className="hero__stats-bar" ref={statsRef}>
-        {stats.map((s,i) => (
-          <StatItem key={s.label} s={s} started={statsVisible} delay={i*120}/>
+        {stats.map((s, i) => (
+          <StatItem key={s.label} s={s} started={statsVisible} delay={i * 120} />
         ))}
       </div>
-
-      {/* Features strip */}
       <div className="hero__features">
-        {features.map(f => (
+        {features.map((f) => (
           <div className="hero__feature" key={f.text}>
-            <span>{f.icon}</span>{f.text}
+            <span>{f.icon}</span>
+            {f.text}
           </div>
         ))}
       </div>
@@ -324,35 +417,59 @@ function Hero() {
   );
 }
 
-function StatItem({s, started, delay}) {
+function StatItem({ s, started, delay }) {
   const [go, setGo] = useState(false);
-  useEffect(() => { if(started) setTimeout(()=>setGo(true), delay); }, [started]);
+  useEffect(() => {
+    if (started) setTimeout(() => setGo(true), delay);
+  }, [started]);
   const n = useCountUp(s.value, 1600, go);
-  const display = s.display
-    ? s.display
-    : `${s.value==="95"&&go ? n : s.value==="12000"&&go ? n.toLocaleString() : go?n:0}${s.suffix}`;
 
   return (
     <div className="hero__stat">
       <strong className="hero__stat-num">
-        {s.display ? (go ? s.display : "–") : `${go ? (s.value==="12000" ? n.toLocaleString() : n) : 0}${s.suffix}`}
+        {s.display
+          ? go
+            ? s.display
+            : "–"
+          : `${
+              go
+                ? s.value === "12000"
+                  ? n.toLocaleString()
+                  : n
+                : 0
+            }${s.suffix}`}
       </strong>
       <span>{s.label}</span>
     </div>
   );
 }
 
-// ── About ────────────────────────────────────────────────────────────────────
+// About
 function About() {
   const [ref, vis] = useScrollReveal();
   return (
     <section id="about" className="section about" ref={ref}>
-      <div className={`about__grid reveal ${vis?"in":""}`}>
+      <div className={`about__grid reveal ${vis ? "in" : ""}`}>
         {[
-          {icon:"🎯", title:"Our Vision",  color:"blue",   text:"To become a trusted learning platform that bridges the gap between education and industry requirements by offering innovative and career-oriented training programs. "},
-          {icon:"🏆", title:"Our Mission", color:"cyan",   text:"To provide quality, affordable, and industry-relevant education that empowers students and professionals to achieve their career goals through practical learning and skill development. "},
-          {icon:"💡", title:"Our Values",  color:"purple", text:"We value quality education, hands-on experience, and continuous learning. Our goal is to help students develop job-ready skills through expert guidance and real-world training."},
-        ].map(c => (
+          {
+            icon: "🎯",
+            title: "Our Vision",
+            color: "blue",
+            text: "To become a trusted learning platform that bridges the gap between education and industry requirements by offering innovative and career-oriented training programs. ",
+          },
+          {
+            icon: "🏆",
+            title: "Our Mission",
+            color: "cyan",
+            text: "To provide quality, affordable, and industry-relevant education that empowers students and professionals to achieve their career goals through practical learning and skill development. ",
+          },
+          {
+            icon: "💡",
+            title: "Our Values",
+            color: "purple",
+            text: "We value quality education, hands-on experience, and continuous learning. Our goal is to help students develop job-ready skills through expert guidance and real-world training.",
+          },
+        ].map((c) => (
           <div className={`about-card about-card--${c.color}`} key={c.title}>
             <div className="about-card__icon">{c.icon}</div>
             <h3>{c.title}</h3>
@@ -364,23 +481,27 @@ function About() {
   );
 }
 
-// ── Courses ──────────────────────────────────────────────────────────────────
+// Courses — uses useNavigate to go to /course-details
 function Courses() {
+  const navigate = useNavigate();
   const [ref, vis] = useScrollReveal();
   const [hov, setHov] = useState(null);
+
   return (
     <section id="courses" className="section courses">
       <div className="section__header">
         <span className="eyebrow">What we offer</span>
         <h2 className="section__title">Our Courses</h2>
-        <p className="section__sub">Handcrafted curricula built with real companies to get you job-ready fast.</p>
+        <p className="section__sub">
+          Handcrafted curricula built with real companies to get you job-ready fast.
+        </p>
       </div>
-      <div className={`courses__grid reveal ${vis?"in":""}`} ref={ref}>
-        {courses.map((c,i) => (
+      <div className={`courses__grid reveal ${vis ? "in" : ""}`} ref={ref}>
+        {courses.map((c, i) => (
           <div
             key={c.title}
-            className={`ccard ${hov===i?"hov":""}`}
-            style={{"--d":`${i*0.06}s`}}
+            className={`ccard ${hov === i ? "hov" : ""}`}
+            style={{ "--d": `${i * 0.06}s` }}
             onMouseEnter={() => setHov(i)}
             onMouseLeave={() => setHov(null)}
           >
@@ -392,12 +513,12 @@ function Courses() {
               <span>📶 {c.level}</span>
             </div>
             <div className="ccard__students">👥 {c.students} enrolled</div>
-           <button
-  className="ccard__cta"
-  onClick={() => window.open(c.pdf, "_blank")}
->
-  View Details →
-</button>
+            <button
+              className="ccard__cta"
+              onClick={() => navigate("/course-details")}
+            >
+              View Details →
+            </button>
           </div>
         ))}
       </div>
@@ -405,7 +526,7 @@ function Courses() {
   );
 }
 
-// ── Placements ───────────────────────────────────────────────────────────────
+// Placements
 function Placements() {
   const [ref, vis] = useScrollReveal();
   return (
@@ -413,20 +534,30 @@ function Placements() {
       <div className="section__header">
         <span className="eyebrow">Our track record</span>
         <h2 className="section__title">Placement Partners</h2>
-        <p className="section__sub">Our graduates work at India's and the world's best tech companies.</p>
+        <p className="section__sub">
+          Our graduates work at India's and the world's best tech companies.
+        </p>
       </div>
-      <div className={`reveal ${vis?"in":""}`} ref={ref}>
+      <div className={`reveal ${vis ? "in" : ""}`} ref={ref}>
         <div className="ticker-wrap">
           <div className="ticker-track">
-            {[...placementCompanies,...placementCompanies].map((c,i) => (
-              <span className="ticker-chip" key={i}>{c}</span>
+            {[...placementCompanies, ...placementCompanies].map((c, i) => (
+              <span className="ticker-chip" key={i}>
+                {c}
+              </span>
             ))}
           </div>
         </div>
         <div className="placement-stats">
-          {[{n:"₹12 LPA",l:"Average Package"},{n:"45 Days",l:"Time to Placement"},{n:"200+",l:"Partner Companies"},{n:"95%",l:"Placement Rate"}].map(s => (
+          {[
+            { n: "₹12 LPA", l: "Average Package" },
+            { n: "45 Days", l: "Time to Placement" },
+            { n: "200+", l: "Partner Companies" },
+            { n: "95%", l: "Placement Rate" },
+          ].map((s) => (
             <div className="p-stat" key={s.l}>
-              <strong>{s.n}</strong><span>{s.l}</span>
+              <strong>{s.n}</strong>
+              <span>{s.l}</span>
             </div>
           ))}
         </div>
@@ -435,7 +566,7 @@ function Placements() {
   );
 }
 
-// ── Testimonials ─────────────────────────────────────────────────────────────
+// Testimonials
 function Testimonials() {
   const [ref, vis] = useScrollReveal();
   return (
@@ -444,9 +575,9 @@ function Testimonials() {
         <span className="eyebrow">Student stories</span>
         <h2 className="section__title">What our graduates say</h2>
       </div>
-      <div className={`tgrid reveal ${vis?"in":""}`} ref={ref}>
-        {testimonials.map((t,i) => (
-          <div className="tcard" key={t.name} style={{"--d":`${i*0.1}s`}}>
+      <div className={`tgrid reveal ${vis ? "in" : ""}`} ref={ref}>
+        {testimonials.map((t, i) => (
+          <div className="tcard" key={t.name} style={{ "--d": `${i * 0.1}s` }}>
             <div className="tcard__stars">★★★★★</div>
             <p className="tcard__text">"{t.text}"</p>
             <div className="tcard__footer">
@@ -464,29 +595,48 @@ function Testimonials() {
   );
 }
 
-// ── Contact ──────────────────────────────────────────────────────────────────
+// Contact
 function Contact() {
   const [ref, vis] = useScrollReveal();
-  const [form, setForm] = useState({name:"",email:"",phone:"",course:"",message:""});
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    course: "",
+    message: "",
+  });
   const [sent, setSent] = useState(false);
-  const h = e => setForm({...form,[e.target.name]:e.target.value});
+  const h = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   return (
     <section id="contact" className="section contact">
       <div className="section__header">
         <span className="eyebrow">Get in touch</span>
         <h2 className="section__title">Start your journey today</h2>
-        <p className="section__sub">Our counsellors will reach out within 24 hours.</p>
+        <p className="section__sub">
+          Our counsellors will reach out within 24 hours.
+        </p>
       </div>
-      <div className={`contact__layout reveal ${vis?"in":""}`} ref={ref}>
+      <div className={`contact__layout reveal ${vis ? "in" : ""}`} ref={ref}>
         <div className="contact__info">
           <h3>Why choose LearnSkillX?</h3>
-          {["✅ Job guarantee or full refund","✅ Learn from ex-FAANG mentors","✅ Live doubt-solving sessions","✅ Resume & interview prep","✅ Lifetime community access"].map(t => (
-            <p key={t} className="contact__bullet">{t}</p>
+          {[
+            "✅ Job guarantee or full refund",
+            "✅ Learn from ex-FAANG mentors",
+            "✅ Live doubt-solving sessions",
+            "✅ Resume & interview prep",
+            "✅ Lifetime community access",
+          ].map((t) => (
+            <p key={t} className="contact__bullet">
+              {t}
+            </p>
           ))}
           <div className="contact__hotline">
             <span>📞</span>
-            <div><strong>+91 7083398545</strong><span>Mon–Sat, 9am – 8pm</span></div>
+            <div>
+              <strong>+91 7083398545</strong>
+              <span>Mon–Sat, 9am – 8pm</span>
+            </div>
           </div>
         </div>
         <div className="contact__form-wrap">
@@ -497,21 +647,72 @@ function Contact() {
               <p>We'll call you back within 24 hours.</p>
             </div>
           ) : (
-            <form onSubmit={e=>{e.preventDefault();setSent(true);}}>
+            <form onSubmit={(e) => { e.preventDefault(); setSent(true); }}>
               <div className="frow">
-                <div className="fg"><label>Full Name</label><input name="name" placeholder="Riya Gupta" value={form.name} onChange={h} required/></div>
-                <div className="fg"><label>Phone</label><input name="phone" placeholder="+91 98765 43210" value={form.phone} onChange={h} required/></div>
+                <div className="fg">
+                  <label>Full Name</label>
+                  <input
+                    name="name"
+                    placeholder="Riya Gupta"
+                    value={form.name}
+                    onChange={h}
+                    required
+                  />
+                </div>
+                <div className="fg">
+                  <label>Phone</label>
+                  <input
+                    name="phone"
+                    placeholder="+91 98765 43210"
+                    value={form.phone}
+                    onChange={h}
+                    required
+                  />
+                </div>
               </div>
-              <div className="fg"><label>Email</label><input name="email" type="email" placeholder="riya@gmail.com" value={form.email} onChange={h} required/></div>
+              <div className="fg">
+                <label>Email</label>
+                <input
+                  name="email"
+                  type="email"
+                  placeholder="riya@gmail.com"
+                  value={form.email}
+                  onChange={h}
+                  required
+                />
+              </div>
               <div className="fg">
                 <label>Course interested in</label>
-                <select name="course" value={form.course} onChange={h} required>
+                <select
+                  name="course"
+                  value={form.course}
+                  onChange={h}
+                  required
+                >
                   <option value="">Select a course…</option>
-                  {courses.map(c => <option key={c.title} value={c.title}>{c.title}</option>)}
+                  {courses.map((c) => (
+                    <option key={c.title} value={c.title}>
+                      {c.title}
+                    </option>
+                  ))}
                 </select>
               </div>
-              <div className="fg"><label>Message (optional)</label><textarea name="message" placeholder="Tell us about your background…" rows={3} value={form.message} onChange={h}/></div>
-              <button type="submit" className="btn btn--primary btn--lg btn--full ripple">Apply Now 🚀</button>
+              <div className="fg">
+                <label>Message (optional)</label>
+                <textarea
+                  name="message"
+                  placeholder="Tell us about your background…"
+                  rows={3}
+                  value={form.message}
+                  onChange={h}
+                />
+              </div>
+              <button
+                type="submit"
+                className="btn btn--primary btn--lg btn--full ripple"
+              >
+                Apply Now 🚀
+              </button>
             </form>
           )}
         </div>
@@ -520,39 +721,49 @@ function Contact() {
   );
 }
 
-// ── Footer ───────────────────────────────────────────────────────────────────
+// Footer
 function Footer() {
   return (
     <footer className="footer">
       <div className="footer__inner">
         <div className="footer__col footer__brand">
-          <span className="footer__logo">LearnSkill<span>X</span></span>
-          <p>Empowering India's next generation of tech talent through world-class, practical education.</p>
-        
+          <span className="footer__logo">
+            LearnSkill<span>X</span>
+          </span>
+          <p>
+            Empowering India's next generation of tech talent through
+            world-class, practical education.
+          </p>
         </div>
-        
         <div className="footer__col">
           <h4>Company</h4>
-          {["About Us","Placements","Blog","Careers","Press"].map(l => <a key={l} href="#">{l}</a>)}
+          {["About Us", "Placements", "Blog", "Careers", "Press"].map((l) => (
+            <a key={l} href="#">
+              {l}
+            </a>
+          ))}
         </div>
         <div className="footer__col">
           <h4>Contact</h4>
-          <p>📧  hr@learnskillx.info</p>
+          <p>📧 hr@learnskillx.info</p>
           <p>📞 +91 7083398545</p>
-          <p><a href="https://maps.app.goo.gl/bzZCSQbP3nWzjJA1A">📍 Pune, Maharashtra</a></p>
+          <p>
+            <a href="https://maps.app.goo.gl/bzZCSQbP3nWzjJA1A">
+              📍 Pune, Maharashtra
+            </a>
+          </p>
           <p>🕐 Mon–Sat, 9am–8pm</p>
           <p>
-  <a
-    href="https://wa.me/917083398545"
-    target="_blank"
-    rel="noopener noreferrer"
-    style={{ display: "flex", alignItems: "center", gap: "8px" }}
-  >
-    <FaWhatsapp color="#25D366" size={20} />
-    +91 7083398545
-  </a>
-</p>
-
+            <a
+              href="https://chat.whatsapp.com/FRIq1mxuIIFBLbm1aUKWRs?s=cl&p=a&ilr=2"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ display: "flex", alignItems: "center", gap: "8px" }}
+            >
+              <FaWhatsapp color="#25D366" size={20} />
+             Whatsapp
+            </a>
+          </p>
         </div>
       </div>
       <div className="footer__bottom">
@@ -567,9 +778,7 @@ function Footer() {
   );
 }
 
-// ── App ──────────────────────────────────────────────────────────────────────
-
-// ── About Us Full Page ────────────────────────────────────────────────────────
+// About Us Full Page
 const instituteHistory = `LearnSkillX is a skill development platform focused on providing practical, industry-oriented education. We aim to bridge the gap between academics and industry by offering hands-on learning, project-based training, and career guidance. Our mission is to empower students with the right skills to build successful careers in technology and professional fields. With expert guidance and structured programs, we support learners in achieving their career goals and improving their technical expertise.`;
 
 const founderInfo = {
@@ -579,8 +788,18 @@ const founderInfo = {
 };
 
 const facultyTeam = [
-  { name: "Vrushali Jadhav", role: "Co-Founder & Faculty Member", description: "Vrushali Jadhav is the Co-Founder of LearnSkillX and a passionate technology enthusiast dedicated to practical learning and skill development. She focuses on providing industry-oriented learning experiences and helping students build successful careers." },
-  { name: "Jayant Navale",   role: "Faculty Member",              description: "Jayant Navale is a dedicated faculty member with expertise in technical training and student mentorship. He is committed to delivering high-quality education and helping learners develop practical skills required in today's industry." },
+  {
+    name: "Vrushali Jadhav",
+    role: "Co-Founder & Faculty Member",
+    description:
+      "Vrushali Jadhav is the Co-Founder of LearnSkillX and a passionate technology enthusiast dedicated to practical learning and skill development. She focuses on providing industry-oriented learning experiences and helping students build successful careers.",
+  },
+  {
+    name: "Jayant Navale",
+    role: "Faculty Member",
+    description:
+      "Jayant Navale is a dedicated faculty member with expertise in technical training and student mentorship. He is committed to delivering high-quality education and helping learners develop practical skills required in today's industry.",
+  },
 ];
 
 const achievements = [
@@ -600,45 +819,58 @@ const certifications = [
   "Professional Development Certifications",
 ];
 
-const achievementIcons = ["🏆","⭐","🎓","🤝","🏅"];
-const certIcons        = ["✅","🎯","📜","💼","🎖️","🌟"];
+const achievementIcons = ["🏆", "⭐", "🎓", "🤝", "🏅"];
+const certIcons = ["✅", "🎯", "📜", "💼", "🎖️", "🌟"];
 
 function AboutUsPage({ onBack }) {
   return (
     <div className="aup-wrap">
-      {/* Mini navbar with back */}
       <nav className="navbar navbar--scrolled">
         <div className="navbar__inner">
-          <a className="navbar__brand" onClick={onBack} style={{cursor:"pointer"}}>
+          <a
+            className="navbar__brand"
+            onClick={onBack}
+            style={{ cursor: "pointer" }}
+          >
             <img src={logo} alt="LearnSkillX Logo" className="navbar__logo" />
-            <span className="navbar__text">LearnSkill<span className="navbar__brand-x">X</span></span>
+            <span className="navbar__text">
+              LearnSkill<span className="navbar__brand-x">X</span>
+            </span>
           </a>
-          <button className="btn btn--ghost-nav" onClick={onBack} style={{marginLeft:"auto"}}>
+          <button
+            className="btn btn--ghost-nav"
+            onClick={onBack}
+            style={{ marginLeft: "auto" }}
+          >
             ← Back to Home
           </button>
         </div>
       </nav>
-
-      {/* Hero */}
       <header className="aup-hero">
         <div className="aup-hero__inner">
           <span className="aup-badge">🏫 India's #1 Skill Learning Platform</span>
-          <h1>About <span className="aup-accent">LearnSkillX</span></h1>
-          <p>Empowering students with practical skills, expert guidance, and a vision for lifelong success in technology and beyond.</p>
+          <h1>
+            About <span className="aup-accent">LearnSkillX</span>
+          </h1>
+          <p>
+            Empowering students with practical skills, expert guidance, and a
+            vision for lifelong success in technology and beyond.
+          </p>
         </div>
       </header>
-
-      {/* Stats */}
-      <div className="aup-stats">
-        {[["2,000+","Students Trained"],["95%","Placement Rate"],["200+","Workshops Held"],["4.9★","Average Rating"]].map(([n,l])=>(
-          <div className="aup-stat" key={l}>
-            <div className="aup-stat__num">{n}</div>
-            <div className="aup-stat__label">{l}</div>
-          </div>
-        ))}
-      </div>
-
-      {/* Our Story */}
+     <div className="aup-stats">
+  {[
+    ["2,000+", "Students Trained"],
+    ["95%", "Placement Rate"],
+    ["200+", "Workshops Held"],
+    ["4.9★", "Average Rating"],
+  ].map(([n, l]) => (
+    <div className="aup-stat" key={l}>
+      <div className="aup-stat__num">{n}</div>
+      <div className="aup-stat__label">{l}</div>
+    </div>
+  ))}
+</div>
       <section className="aup-section">
         <span className="aup-eyebrow">Our Story</span>
         <div className="aup-card">
@@ -646,8 +878,6 @@ function AboutUsPage({ onBack }) {
           <p>{instituteHistory}</p>
         </div>
       </section>
-
-      {/* Founder */}
       <section className="aup-section">
         <span className="aup-eyebrow">Leadership</span>
         <h2 className="aup-section__title">Founder Information</h2>
@@ -660,15 +890,18 @@ function AboutUsPage({ onBack }) {
           </div>
         </div>
       </section>
-
-      {/* Faculty */}
       <section className="aup-section">
         <span className="aup-eyebrow">Meet the Team</span>
         <h2 className="aup-section__title">Faculty Team</h2>
         <div className="aup-faculty-grid">
-          {facultyTeam.map((f,i)=>(
+          {facultyTeam.map((f, i) => (
             <div className="aup-faculty-card" key={i}>
-              <div className="aup-faculty-card__avatar">{f.name.split(" ").map(w=>w[0]).join("")}</div>
+              <div className="aup-faculty-card__avatar">
+                {f.name
+                  .split(" ")
+                  .map((w) => w[0])
+                  .join("")}
+              </div>
               <h3>{f.name}</h3>
               <p className="aup-faculty-card__role">{f.role}</p>
               <p>{f.description}</p>
@@ -676,55 +909,55 @@ function AboutUsPage({ onBack }) {
           ))}
         </div>
       </section>
-
-      {/* Achievements */}
       <section className="aup-section">
         <span className="aup-eyebrow">Milestones</span>
         <h2 className="aup-section__title">Achievements</h2>
         <div className="aup-list-grid">
-          {achievements.map((item,i)=>(
+          {achievements.map((item, i) => (
             <div className="aup-list-card" key={i}>
-              <span className="aup-list-card__icon">{achievementIcons[i]||"🏆"}</span>
+              <span className="aup-list-card__icon">
+                {achievementIcons[i] || "🏆"}
+              </span>
               <span>{item}</span>
             </div>
           ))}
         </div>
       </section>
-
-      {/* Certifications */}
       <section className="aup-section">
         <span className="aup-eyebrow">Recognition</span>
         <h2 className="aup-section__title">Certifications</h2>
         <div className="aup-list-grid">
-          {certifications.map((item,i)=>(
+          {certifications.map((item, i) => (
             <div className="aup-list-card" key={i}>
-              <span className="aup-list-card__icon">{certIcons[i]||"✅"}</span>
+              <span className="aup-list-card__icon">{certIcons[i] || "✅"}</span>
               <span>{item}</span>
             </div>
           ))}
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="footer" style={{marginTop:"60px"}}>
-        <div style={{textAlign:"center",padding:"40px 20px",borderTop:"1px solid rgba(255,255,255,.08)"}}>
-          <p style={{color:"#64748b",fontSize:"13px"}}>© {new Date().getFullYear()} LearnSkillX Institute. All rights reserved.</p>
+      <footer className="footer" style={{ marginTop: "60px" }}>
+        <div
+          style={{
+            textAlign: "center",
+            padding: "40px 20px",
+            borderTop: "1px solid rgba(255,255,255,.08)",
+          }}
+        >
+          <p style={{ color: "#64748b", fontSize: "13px" }}>
+            © {new Date().getFullYear()} LearnSkillX Institute. All rights
+            reserved.
+          </p>
         </div>
       </footer>
     </div>
   );
 }
 
-export default function App() {
-  const [page, setPage] = useState("home");
-
-  if (page === "about") {
-    return <AboutUsPage onBack={() => { setPage("home"); window.scrollTo(0,0); }} />;
-  }
-
+// Home page — all sections
+function HomePage({ onAboutClick }) {
   return (
     <>
-      <Navbar onAboutClick={() => { setPage("about"); window.scrollTo(0,0); }} />
+      <Navbar onAboutClick={onAboutClick} />
       <Hero />
       <About />
       <Courses />
@@ -733,5 +966,42 @@ export default function App() {
       <Contact />
       <Footer />
     </>
+  );
+}
+
+// App root — manages About page state + routing
+export default function App() {
+  const [page, setPage] = useState("home");
+
+  // "About" is a local page-swap (no URL change needed for it)
+  if (page === "about") {
+    return (
+      <AboutUsPage
+        onBack={() => {
+          setPage("home");
+          window.scrollTo(0, 0);
+        }}
+      />
+    );
+  }
+
+  return (
+    <Routes>
+      {/* Main landing page */}
+      <Route
+        path="/"
+        element={
+          <HomePage
+            onAboutClick={() => {
+              setPage("about");
+              window.scrollTo(0, 0);
+            }}
+          />
+        }
+      />
+
+      {/* Course details page — loaded when "View Details" is clicked */}
+      <Route path="/course-details" element={<Course />} />
+    </Routes>
   );
 }
